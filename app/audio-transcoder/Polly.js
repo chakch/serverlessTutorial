@@ -5,11 +5,11 @@ const AWS = require('aws-sdk');
 
 const convertTextToVoice = function(data){
     const polly = new AWS.Polly();
-
+    console.log('data',data);
     const params = {
         OutputFormat: "mp3",
         SampleRate: "8000",
-        Text: data,
+        Text: "data",
         TextType: "text",
         VoiceId: 'Celine'
     };

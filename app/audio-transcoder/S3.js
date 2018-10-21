@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 
 
+const s3 ={};
 const saveFile = (file) => {
     const S3 = new AWS.S3();
     let params = {
@@ -9,7 +10,9 @@ const saveFile = (file) => {
         Body : file,
         ContentType:'audio/mp3'
     };
-    return S3.putObject(params).promise();
+    return S3.upload(params).promise();
 };
 
-exports.saveFile = saveFile;
+s3.saveFile = saveFile;
+module.exports = s3;
+//exports.saveFile = saveFile;

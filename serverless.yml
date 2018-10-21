@@ -56,3 +56,4 @@ resources:
 #AWS_PROFILE=mchaaben serverless invoke local --function audio-transcoder
 #AWS_PROFILE=mchaaben serverless invoke local --function rss-reader
 #AWS_PROFILE=mchaaben serverless deploy -v
+#SLS_DEBUG=* AWS_PROFILE=mchaaben serverless invoke local --function audio-transcoder --path ../event.json -v

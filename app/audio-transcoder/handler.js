@@ -1,13 +1,19 @@
 
 const polly = require('./Polly');
-const S3 = require('./S3');
+const s3 = require('./S3');
 module.exports.hello = (event, context, callback) => {
 
+    console.log(event);
     event.Records.forEach( record => {
         const description = record.dynamodb.NewImage.Message.S;
+        console.log(description);
         polly.convertTextToVoice(description)
-            .then(audioStream => S3.saveFile(audioStream))
-            .catch((e) , console.log('error',e));
+            .then((audioStream) => {
+                console.log(audioStream);
+                return s3.saveFile(audioStream.AudioStream)
+            })
+            .then(() => console.log('saved',))
+            .catch((e) => console.log('error',e));
     });
 
     callback(null, 'audio transcoder ok');
