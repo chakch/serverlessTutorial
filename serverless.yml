@@ -6,18 +6,23 @@ provider:
   name: aws
   runtime: nodejs8.10
 
-
 functions:
-  hello:
-    handler: app/handler.hello
+  rss-reader:
+    handler: app/rss-reader/handler.hello
     events:
-      - stream:
-          type: dynamodb
-          arn:
-            Fn::GetAtt:
-              - Article
-              - StreamArn
-          batchSize: 1
+      - schedule: rate(24 hours)
+
+  audio-transcoder:
+    handler: app/audio-transcoder/handler.hello
+    events:
+    - stream:
+        type: dynamodb
+        arn:
+          Fn::GetAtt:
+            - Article
+            - StreamArn
+        batchSize: 1
+
 resources:
   Resources:
     ServerlessXkeDemoBucket:
@@ -39,16 +44,7 @@ resources:
           WriteCapacityUnits: 1
         StreamSpecification:
           StreamViewType: NEW_IMAGE
-#    ArticleStream:
-#      Type: AWS::Lambda::EventSourceMapping
-#      Properties:
-#        BatchSize: 1
-#        Enabled: True
-#        EventSourceArn:
-#          Fn::GetAtt: [ Article , StreamArn ]
-#        FunctionName:
-#          Fn::GetAtt: [ hello , Arn ]
-#        StartingPosition: LATEST
+
   Outputs:
      NewOutput:
        Description: "Description for the output"
@@ -57,5 +53,6 @@ resources:
 
 
 
-#AWS_PROFILE=mchaaben serverless invoke local --function hello
+#AWS_PROFILE=mchaaben serverless invoke local --function audio-transcoder
+#AWS_PROFILE=mchaaben serverless invoke local --function rss-reader
 #AWS_PROFILE=mchaaben serverless deploy -v

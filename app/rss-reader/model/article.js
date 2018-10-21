@@ -1,4 +1,4 @@
-const vogels = require('../../config/vogels');
+const vogels = require('../../../config/vogels');
 const Joi = require('joi');
 
 const Article = vogels.define('Article', {

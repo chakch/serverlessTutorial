@@ -1,8 +1,5 @@
 'use strict';
 const reader = require('./RssReader');
-const Polly = require('./Polly');
-const S3 = require('./S3');
-const Fs = require('fs');
 const uuid = require('uuid');
 const article = require('./model/article');
 
