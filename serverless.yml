@@ -1,10 +1,11 @@
 
 service: aws-nodejs # NOTE: update this with your service name
 
-
 provider:
   name: aws
   runtime: nodejs8.10
+  region: us-east-1
+
 
 functions:
   rss-reader:

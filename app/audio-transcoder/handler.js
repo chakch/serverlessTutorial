@@ -5,7 +5,7 @@ module.exports.hello = (event, context, callback) => {
 
     console.log(event);
     event.Records.forEach( record => {
-        const description = record.dynamodb.NewImage.Message.S;
+        const description = record.dynamodb.NewImage.description.S;
         console.log(description);
         polly.convertTextToVoice(description)
             .then((audioStream) => {

@@ -1,7 +1,7 @@
 'use strict';
 
-let AWS = require('aws-sdk');
-let vogels = require('vogels-promisified');
+const AWS = require('aws-sdk');
+const vogels = require('vogels-promisified');
 
 
 new AWS.CredentialProviderChain().resolve((err, cred)=>{
@@ -11,5 +11,6 @@ new AWS.CredentialProviderChain().resolve((err, cred)=>{
     vogels.AWS.config.credentials = cred;
 });
 //vogels.AWS.config.update({"region": config.get('aws.region')});
-
+vogels.AWS.config.update({"region": 'us-east-1'});
+console.log('vogels.AWS.config',vogels.AWS.config.region);
 module.exports = vogels;
