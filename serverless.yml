@@ -4,17 +4,43 @@ service: aws-nodejs # NOTE: update this with your service name
 provider:
   name: aws
   runtime: nodejs8.10
-  region: us-east-1
-
+  region: eu-central-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:BatchGetItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+      Resource: "*"
+    - Sid: Backup
+      Effect: Allow
+      Action:
+        - polly:*
+      Resource: "*"
+    - Sid: saver
+      Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
 
 functions:
   rss-reader:
-    handler: app/rss-reader/handler.hello
+    handler: app/rss-reader/reader.handler
     events:
       - schedule: rate(24 hours)
-
+    package:
+      include:
+        - app/rss-reader/**
+    environment:
+      ARTICLE_TABLE: article
   audio-transcoder:
-    handler: app/audio-transcoder/handler.hello
+    handler: app/audio-transcoder/transcoder.handler
     events:
     - stream:
         type: dynamodb
@@ -23,6 +49,12 @@ functions:
             - Article
             - StreamArn
         batchSize: 1
+    package:
+      include:
+        - app/audio-transcoder/**
+    environment:
+      BUCKET_NAME: serverless-xke-demo
+
 
 resources:
   Resources:
@@ -45,7 +77,6 @@ resources:
           WriteCapacityUnits: 1
         StreamSpecification:
           StreamViewType: NEW_IMAGE
-
   Outputs:
      NewOutput:
        Description: "Description for the output"

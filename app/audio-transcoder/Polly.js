@@ -1,7 +1,4 @@
 const AWS = require('aws-sdk');
-//const Stream = require('stream')
-//const Fs = require('fs');
-
 
 const convertTextToVoice = function(data){
     const polly = new AWS.Polly();
@@ -9,9 +6,9 @@ const convertTextToVoice = function(data){
     const params = {
         OutputFormat: "mp3",
         SampleRate: "8000",
-        Text: "data",
+        Text: data,
         TextType: "text",
-        VoiceId: 'Celine'
+        VoiceId: 'Amy'
     };
     return polly.synthesizeSpeech(params).promise();
 

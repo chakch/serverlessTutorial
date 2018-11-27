@@ -1,18 +1,16 @@
 const AWS = require('aws-sdk');
+const bucket = process.env.BUCKET_NAME;
 
-
-const s3 ={};
-const saveFile = (file) => {
+const saveFile = (id,file) => {
     const S3 = new AWS.S3();
     let params = {
-        Bucket : "serverless-xke-demo",
-        Key : "key.mp3",
+        Bucket : bucket,
+        Key : `${id}.mp3`,
         Body : file,
         ContentType:'audio/mp3'
     };
-    return S3.upload(params).promise();
+    return S3.upload(params).promise()
+        .catch(e => console.log({e}));
 };
 
-s3.saveFile = saveFile;
-module.exports = s3;
-//exports.saveFile = saveFile;
+exports.saveFile = saveFile;
